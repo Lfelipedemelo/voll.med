@@ -26,6 +26,7 @@ public class Paciente {
 		this.telefone = dados.telefone();
 		this.cpf = dados.cpf();
 		this.endereco = new Endereco(dados.endereco());
+		this.ativo = true;
 	}
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +37,21 @@ public class Paciente {
 	private String cpf;
 	@Embedded
 	private Endereco endereco;
+	private boolean ativo;
+	
+	public void atualizar(DadosAtualizarPaciente dadosAtualizar) {
+		if(null != dadosAtualizar.nome()) {
+			this.nome = dadosAtualizar.nome();			
+		}
+		if (null != dadosAtualizar.telefone()) {
+			this.telefone = dadosAtualizar.telefone();
+		}
+		if (null != dadosAtualizar.endereco()) {
+			this.endereco = dadosAtualizar.endereco();
+		}
+	}
+	
+	public void excluir() {
+		this.ativo = false;
+	}
 }

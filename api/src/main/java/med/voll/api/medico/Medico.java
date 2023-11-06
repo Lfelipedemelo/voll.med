@@ -30,6 +30,7 @@ public class Medico {
 		this.crm = dados.crm();
 		this.especialidade = dados.especialidade();
 		this.endereco = new Endereco(dados.endereco());
+		this.ativo = true;
 	}
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,6 +45,8 @@ public class Medico {
 	
 	@Embedded
 	private Endereco endereco;
+	
+	private Boolean ativo;
 
 	public void atualizarInformacoes(@Valid DadosAtualizacaoMedico dados) {
 		if (null != dados.nome()) {
@@ -55,5 +58,9 @@ public class Medico {
 		if (null != dados.endereco()) {
 			this.endereco.atualizarInformacoes(dados.endereco());
 		}
+	}
+
+	public void excluir() {
+		this.ativo = false;
 	}
 }
