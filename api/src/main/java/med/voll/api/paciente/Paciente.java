@@ -37,7 +37,7 @@ public class Paciente {
 	private String cpf;
 	@Embedded
 	private Endereco endereco;
-	private boolean ativo;
+	private Boolean ativo;
 	
 	public void atualizar(DadosAtualizarPaciente dadosAtualizar) {
 		if(null != dadosAtualizar.nome()) {
