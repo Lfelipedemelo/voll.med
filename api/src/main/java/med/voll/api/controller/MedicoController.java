@@ -1,3 +1,4 @@
+
 package med.voll.api.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import med.voll.api.domain.medico.DadosAtualizacaoMedico;
@@ -26,6 +28,7 @@ import med.voll.api.domain.medico.MedicoRepository;
 
 @RestController
 @RequestMapping("medicos")
+@SecurityRequirement(name = "bearer-key")
 public class MedicoController {
 
 	@Autowired
@@ -38,7 +41,7 @@ public class MedicoController {
 
 		Medico medico = new Medico(dadosCadastroMedico);
 		repository.save(medico);
-		
+
 		var uri = uriBuilder.path("/medicos/{id}").buildAndExpand(medico.getId()).toUri();
 
 		return ResponseEntity.created(uri).body(new DadosDetalhamentoMedico(medico));
@@ -49,7 +52,7 @@ public class MedicoController {
 		Page<DadosListagemMedico> page = repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
 		return ResponseEntity.ok(page);
 	}
-	
+
 	@PutMapping
 	@Transactional
 	public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoMedico dados) {
@@ -57,7 +60,7 @@ public class MedicoController {
 		medico.atualizarInformacoes(dados);
 		return ResponseEntity.ok(new DadosDetalhamentoMedico(medico));
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity excluir(@PathVariable Long id) {
@@ -65,7 +68,7 @@ public class MedicoController {
 		medico.excluir();
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity detalhar(@PathVariable Long id) {
 		Medico medico = repository.getReferenceById(id);
